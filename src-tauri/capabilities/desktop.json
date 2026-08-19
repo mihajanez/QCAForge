@@ -1,0 +1,30 @@
+{
+  "identifier": "desktop-capability",
+  "platforms": [
+    "macOS",
+    "windows",
+    "linux"
+  ],
+  "windows": [
+    "main",
+    "splashscreen"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:allow-set-title",
+    "core:window:allow-set-progress-bar",
+    "clipboard-manager:allow-write-text",
+    "clipboard-manager:allow-read-text",
+    "clipboard-manager:allow-clear",
+    "clipboard-manager:default",
+    "dialog:default",
+    "fs:write-all",
+    "fs:read-all",
+    "fs:allow-exists",
+    "opener:default",
+    "os:default",
+    "os:allow-hostname",
+    "store:default",
+    "notification:default"
+  ]
+}
