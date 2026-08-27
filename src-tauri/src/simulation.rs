@@ -22,10 +22,10 @@ pub struct SimulationModelDescriptor {
 }
 
 fn get_available_sim_models() -> Vec<Box<dyn SimulationModelTrait>> {
-    vec![
+    return vec![
         Box::new(BistableModel::new()),
         Box::new(ICHAModel::new()),
-    ]
+    ];
 }
 
 #[tauri::command]
