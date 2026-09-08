@@ -3,7 +3,7 @@ use std::fs::File;
 use qca_core::{
     design::file::QCADesign,
     simulation::{
-        bistable::BistableModel, file::write_to_file, icha::ICHAModel,
+        bistable::BistableModel, file::write_to_file, get_num_inputs, icha::ICHAModel,
         model::SimulationModelTrait, run_simulation_async,
         settings::OptionsList, SimulationProgress,
     },
@@ -79,10 +79,30 @@ pub fn run_sim_model(
                 .deserialize_clock_generator_settings(&clock_generator_settings.to_string())
                 .map_err(|e| format!("Error parsing clock generator settings: {}", e))?;
 
+            let custom_input_sequence = if qca_design.simulation_settings.use_custom_input_sequence {
+                let sequence = qca_design.simulation_settings.custom_input_sequence.clone();
+                if sequence.is_empty() {
+                    return Err(
+                        "Custom input sequence is enabled but has no vectors".into(),
+                    );
+                }
+                let num_inputs = get_num_inputs(&layers);
+                if sequence.iter().any(|vector| vector.len() != num_inputs) {
+                    return Err(format!(
+                        "Every vector in the custom input sequence must have exactly {} value(s), one per input",
+                        num_inputs
+                    ));
+                }
+                Some(sequence)
+            } else {
+                None
+            };
+
             let file = File::create(&result_filename)
                 .map_err(|e| format!("Could not create result file: {}", e))?;
 
-            let (sim_handle, progress_rx, _) = run_simulation_async(model, layers, architectures);
+            let (sim_handle, progress_rx, _) =
+                run_simulation_async(model, layers, architectures, custom_input_sequence);
 
             for progress in progress_rx {
                 match progress {
