@@ -90,13 +90,21 @@
 							}
 						: {};
 
+		// A truth table is most useful with every cell shown right away
+		// rather than starting empty and requiring the user to select each
+		// input/output by hand; other panel types still start unselected.
+		const initialInputs: PanelInput[] =
+			panelId === "truthTable" && qcaSimulation
+				? qcaSimulation.getInputs(InputType.CELL)
+				: [];
+
 		visuals.push({
 			id: panelId,
 			Component: component,
 			PropsPanel: propsPanel,
 			props: {
 				title: componentTitle,
-				inputs: [],
+				inputs: initialInputs,
 				visualProps,
 			},
 			inputMode,
