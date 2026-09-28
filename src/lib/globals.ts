@@ -26,3 +26,10 @@ export const recentFilesManager = new RecentFilesManager();
 
 // UI state management
 export const visibleBottomPanels: Writable<string[]> = writable([]);
+
+// Returns a detached copy of the design as currently edited in the Design
+// view (including unsaved changes and model settings); registered by
+// design-page.svelte while it is mounted.
+export const designSnapshotProvider: Writable<
+	(() => Promise<QCADesignFile>) | undefined
+> = writable(undefined);

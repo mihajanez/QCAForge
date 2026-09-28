@@ -21,9 +21,11 @@ mod window_menu;
 use window_menu::create_menu_bar;
 
 mod analysis;
+mod robustness;
 mod simulation;
 
 use analysis::*;
+use robustness::*;
 use simulation::*;
 
 mod startup;
@@ -58,6 +60,7 @@ fn main() {
             Ok(())
         })
         .manage(Mutex::new(StartupState::new()))
+        .manage(RobustnessState::default())
         .invoke_handler(tauri::generate_handler![
             get_build_info,
             get_sim_version,
@@ -68,6 +71,8 @@ fn main() {
             save_design_file,
             load_simulation_file,
             calculate_truth_table,
+            run_robustness_analysis,
+            cancel_robustness_analysis,
             startup_frontend_ready,
             set_log_level,
             get_log_level,

@@ -16,13 +16,20 @@
 		createDefaultDesignViewProps,
 		createDesign,
 		createQCADesignFile,
+		deserializeQCADesignFile,
 		saveDesignToFile,
 		serializeQCADesignFile,
 		type QCADesignFile,
 	} from "$lib/qca-design";
 	import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 	import { save } from "@tauri-apps/plugin-dialog";
-	import { design, design_filename, visibleBottomPanels } from "$lib/globals";
+	import {
+		design,
+		design_filename,
+		designSnapshotProvider,
+		visibleBottomPanels,
+	} from "$lib/globals";
+	import { page } from "$app/state";
 	import { get } from "svelte/store";
 	import { lastDirectoryManager } from "$lib/last-directory";
 	import { lastSimulationModelManager } from "$lib/last-simulation-model";
@@ -231,13 +238,32 @@
 				});
 		});
 		const unlistenExportFigure = listen(EVENT_EXPORT_FIGURE, () => {
+			// This page stays mounted while other views are shown.
+			if (!page.url.pathname.startsWith("/design")) return;
 			designer?.openPrintDesignModal();
+		});
+
+		designSnapshotProvider.set(async () => {
+			const snapshot = await createQCADesignFile(
+				await createDesign(
+					layers,
+					selected_model_id,
+					simulation_models,
+					cell_architectures,
+					useCustomInputSequence,
+					customInputSequence,
+				),
+				designViewProps,
+			);
+			// Round-trip so later edits in the designer don't leak into it.
+			return deserializeQCADesignFile(serializeQCADesignFile(snapshot));
 		});
 
 		return () => {
 			unlistenSave.then((f) => f());
 			unlistenSaveAs.then((f) => f());
 			unlistenExportFigure.then((f) => f());
+			designSnapshotProvider.set(undefined);
 		};
 	});
 

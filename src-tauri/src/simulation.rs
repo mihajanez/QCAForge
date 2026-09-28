@@ -53,75 +53,82 @@ pub fn create_sim_model(sim_model_id: String) -> Option<Box<dyn SimulationModelT
     None
 }
 
+/// Builds the simulation model selected in `qca_design` (with its model and
+/// clock generator settings applied) and validates the custom input
+/// sequence, if one is enabled.
+pub fn prepare_simulation(
+    qca_design: &QCADesign,
+) -> Result<(Box<dyn SimulationModelTrait>, Option<Vec<Vec<usize>>>), String> {
+    let sim_model_id = qca_design
+        .simulation_settings
+        .selected_simulation_model_id
+        .clone()
+        .ok_or("No simulation model is selected")?;
+    let sim_settings = qca_design
+        .simulation_settings
+        .simulation_model_settings
+        .get(&sim_model_id)
+        .ok_or(format!("Design has no settings for model '{}'", sim_model_id))?;
+
+    let mut model = create_sim_model(sim_model_id).ok_or("No model with such id exists")?;
+    model
+        .deserialize_model_settings(&sim_settings.model_settings.to_string())
+        .map_err(|e| format!("Error parsing model settings: {}", e))?;
+    model
+        .deserialize_clock_generator_settings(&sim_settings.clock_generator_settings.to_string())
+        .map_err(|e| format!("Error parsing clock generator settings: {}", e))?;
+
+    let custom_input_sequence = if qca_design.simulation_settings.use_custom_input_sequence {
+        let sequence = qca_design.simulation_settings.custom_input_sequence.clone();
+        if sequence.is_empty() {
+            return Err("Custom input sequence is enabled but has no vectors".into());
+        }
+        let num_inputs = get_num_inputs(&qca_design.layers);
+        if sequence.iter().any(|vector| vector.len() != num_inputs) {
+            return Err(format!(
+                "Every vector in the custom input sequence must have exactly {} value(s), one per input",
+                num_inputs
+            ));
+        }
+        Some(sequence)
+    } else {
+        None
+    };
+
+    Ok((model, custom_input_sequence))
+}
+
 #[tauri::command(async)]
 pub fn run_sim_model(
     app: AppHandle,
     qca_design: QCADesign,
     result_filename: String,
 ) -> Result<String, String> {
-    let sim_model_id = qca_design
-        .simulation_settings
-        .selected_simulation_model_id
-        .clone()
-        .unwrap();
-    let sim_settings = &qca_design.simulation_settings.simulation_model_settings[&sim_model_id];
-    let sim_model_settings = sim_settings.model_settings.clone();
-    let clock_generator_settings = sim_settings.clock_generator_settings.clone();
+    let (model, custom_input_sequence) = prepare_simulation(&qca_design)?;
     let layers = qca_design.layers.clone();
     let architectures = qca_design.cell_architectures.clone();
 
-    match create_sim_model(sim_model_id) {
-        Some(mut model) => {
-            model
-                .deserialize_model_settings(&sim_model_settings.to_string())
-                .map_err(|e| format!("Error parsing model settings: {}", e))?;
-            model
-                .deserialize_clock_generator_settings(&clock_generator_settings.to_string())
-                .map_err(|e| format!("Error parsing clock generator settings: {}", e))?;
+    let file = File::create(&result_filename)
+        .map_err(|e| format!("Could not create result file: {}", e))?;
 
-            let custom_input_sequence = if qca_design.simulation_settings.use_custom_input_sequence {
-                let sequence = qca_design.simulation_settings.custom_input_sequence.clone();
-                if sequence.is_empty() {
-                    return Err(
-                        "Custom input sequence is enabled but has no vectors".into(),
-                    );
-                }
-                let num_inputs = get_num_inputs(&layers);
-                if sequence.iter().any(|vector| vector.len() != num_inputs) {
-                    return Err(format!(
-                        "Every vector in the custom input sequence must have exactly {} value(s), one per input",
-                        num_inputs
-                    ));
-                }
-                Some(sequence)
-            } else {
-                None
-            };
+    let (sim_handle, progress_rx, _) =
+        run_simulation_async(model, layers, architectures, custom_input_sequence);
 
-            let file = File::create(&result_filename)
-                .map_err(|e| format!("Could not create result file: {}", e))?;
-
-            let (sim_handle, progress_rx, _) =
-                run_simulation_async(model, layers, architectures, custom_input_sequence);
-
-            for progress in progress_rx {
-                match progress {
-                    SimulationProgress::Running {
-                        current_sample,
-                        total_samples,
-                    } => {
-                        let percent = (current_sample as f32 / total_samples as f32) * 100.0;
-                        app.emit("simulationProgress", percent).unwrap();
-                    }
-                    _ => {}
-                }
+    for progress in progress_rx {
+        match progress {
+            SimulationProgress::Running {
+                current_sample,
+                total_samples,
+            } => {
+                let percent = (current_sample as f32 / total_samples as f32) * 100.0;
+                app.emit("simulationProgress", percent).unwrap();
             }
-
-            let simulation_data = sim_handle.join().unwrap();
-            write_to_file(file, &qca_design, &simulation_data)
-                .map_err(|e| format!("Could not write result file: {}", e))?;
-            Ok(result_filename)
+            _ => {}
         }
-        None => Err("No model with such id exists".into()),
     }
+
+    let simulation_data = sim_handle.join().unwrap();
+    write_to_file(file, &qca_design, &simulation_data)
+        .map_err(|e| format!("Could not write result file: {}", e))?;
+    Ok(result_filename)
 }

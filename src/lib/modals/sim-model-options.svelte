@@ -3,18 +3,37 @@
 	import BaseModal from "./base-modal.svelte";
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
+	import { Button } from "$lib/components/ui/button";
 
 	interface Props {
 		isOpen: boolean;
 		model: SimulationModel;
 		applyCallback: () => void;
+		/** Exports all model parameters for the QCASim analysis scripts. */
+		onExport?: (model: SimulationModel) => void;
 	}
 
 	let {
 		isOpen = $bindable(),
 		model = $bindable(),
 		applyCallback,
+		onExport,
 	}: Props = $props();
+
+	// Export what is currently entered, even if not applied yet.
+	function exportParameters(event: MouseEvent) {
+		const form = (event.currentTarget as HTMLButtonElement).form;
+		const data: any = form ? Object.fromEntries(new FormData(form)) : {};
+		const settings = { ...model.model_settings };
+		model.model_option_list.forEach((option: any) => {
+			if (option.type !== "Input") return;
+			if (option.descriptor.type === "NumberInput") {
+				const value = parseFloat(data[option.unique_id]);
+				if (!isNaN(value)) settings[option.unique_id] = value;
+			}
+		});
+		onExport?.({ ...model, model_settings: settings });
+	}
 
 	function applyModelChanges(data: any) {
 		model.model_option_list.forEach((option: any) => {
@@ -37,6 +56,23 @@
 	{/snippet}
 	{#snippet description()}
 		Configure parameters for the selected model.
+	{/snippet}
+	{#snippet footer()}
+		{#if onExport}
+			<Button
+				type="button"
+				variant="outline"
+				class="sm:mr-auto"
+				title="Export all model, clock generator and geometry parameters as JSON for the QCASim scripts"
+				onclick={exportParameters}
+			>
+				Export parameters…
+			</Button>
+		{/if}
+		<Button type="button" variant="secondary" onclick={() => (isOpen = false)}>
+			Cancel
+		</Button>
+		<Button type="submit">Ok</Button>
 	{/snippet}
 	<div class="flex flex-col gap-2">
 		{#each model.model_option_list as option}

@@ -40,6 +40,7 @@
 	import { lastDirectoryManager } from "$lib/last-directory";
 	import DesignPage from "$lib/design/design-page.svelte";
 	import AnalysisPage from "$lib/analysis/analysis-page.svelte";
+	import RobustnessPage from "$lib/robustness/robustness-page.svelte";
 
 	let { children } = $props();
 	const appWindow = getCurrentWebviewWindow();
@@ -53,6 +54,14 @@
 	// panel state.
 	let isDesignRoute = $derived(page.url.pathname.startsWith("/design"));
 	let isAnalysisRoute = $derived(page.url.pathname.startsWith("/analysis"));
+	let isRobustnessRoute = $derived(
+		page.url.pathname.startsWith("/robustness"),
+	);
+	// Mounted on first visit, then kept alive like the other views.
+	let robustnessVisited = $state(false);
+	$effect(() => {
+		if (isRobustnessRoute) robustnessVisited = true;
+	});
 
 	design_filename.subscribe((value) => {
 		const DESIGN_MODE = page.url.pathname.startsWith("/design");
@@ -214,6 +223,15 @@
 				style:display={isAnalysisRoute ? "flex" : "none"}
 			>
 				<AnalysisPage />
+			</div>
+		{/if}
+
+		{#if robustnessVisited}
+			<div
+				class="h-full w-full flex flex-col"
+				style:display={isRobustnessRoute ? "flex" : "none"}
+			>
+				<RobustnessPage active={isRobustnessRoute} />
 			</div>
 		{/if}
 	</div>

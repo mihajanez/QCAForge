@@ -1,7 +1,11 @@
 import { load, Store } from "@tauri-apps/plugin-store";
 import { dirname } from "@tauri-apps/api/path";
 
-export type DirectoryCategory = "design" | "simulation" | "figure";
+export type DirectoryCategory =
+	| "design"
+	| "simulation"
+	| "figure"
+	| "robustness";
 
 const LAST_DIRECTORIES_STORE = "last-directories.json";
 

@@ -25,6 +25,8 @@
 	import { lastDirectoryManager } from "$lib/last-directory";
 	import { lastSimulationModelManager } from "$lib/last-simulation-model";
 	import { QCA_SIMULATION_FILE_EXTENSION } from "$lib/qca-simulation";
+	import { exportModelParameters } from "$lib/model-parameters";
+	import { goto } from "$app/navigation";
 
 	interface Props {
 		selected_model_id: string | undefined;
@@ -105,6 +107,25 @@
 			lastSimulationModelManager.setModelId(selected_model_id);
 		}
 	});
+
+	async function exportParameters(model: SimulationModel | undefined = selectedModel) {
+		if (!model) {
+			toast.error("Please select a simulation model first.");
+			return;
+		}
+		try {
+			const filename = await exportModelParameters(
+				layers,
+				cell_architectures,
+				model,
+				get(design_filename),
+			);
+			if (filename) toast.success(`Parameters exported to ${filename}`);
+		} catch (err) {
+			console.error(err);
+			toast.error("Could not export the model parameters.");
+		}
+	}
 
 	function applyCallback() {
 		if (!selectedModel) throw new Error("Invalid simulation model!");
@@ -259,6 +280,15 @@
 							>Input sequence settings</DropdownMenu.Item
 						>
 					</DropdownMenu.Group>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Group>
+						<DropdownMenu.Item onclick={() => exportParameters()}
+							>Export model parameters…</DropdownMenu.Item
+						>
+						<DropdownMenu.Item onclick={() => goto("/robustness")}
+							>Robustness analysis…</DropdownMenu.Item
+						>
+					</DropdownMenu.Group>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 
@@ -287,12 +317,14 @@
 	bind:isOpen={openSimOptionsModal}
 	model={selectedModel!}
 	{applyCallback}
+	onExport={exportParameters}
 />
 
 <ClockGeneratorOptions
 	bind:isOpen={openClockGeneratorOptionsModal}
 	model={selectedModel!}
 	{applyCallback}
+	onExport={exportParameters}
 />
 
 <InputSequenceSettings

@@ -93,6 +93,17 @@
 	>
 		<Icon width={30} icon="material-symbols:search-insights-rounded" />
 	</Button>
+	<Button
+		variant="ghost"
+		size="icon"
+		class="data-[state=on]:bg-sidebar-ring"
+		href="/robustness"
+		data-state={page.url.pathname.startsWith("/robustness") ? "on" : "off"}
+		aria-label="Navigate to robustness analysis"
+		title="Robustness analysis"
+	>
+		<Icon width={30} icon="material-symbols:grid-on-outline" />
+	</Button>
 	<div class="grow"></div>
 	<Button
 		variant="ghost"
