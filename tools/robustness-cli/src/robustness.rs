@@ -24,18 +24,13 @@ use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::mpsc::{self, RecvTimeoutError};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
-use tauri::{AppHandle, Emitter, Manager};
+use crate::shim::AppHandle;
 
 const EVENT_ROBUSTNESS_PROGRESS: &str = "robustnessProgress";
 const EVENT_ROBUSTNESS_POINT: &str = "robustnessPoint";
 const MAX_SWEEP_POINTS: usize = 10_000;
 const PROGRESS_INTERVAL: Duration = Duration::from_millis(200);
 
-#[derive(Default)]
-pub struct RobustnessState {
-    cancel: Arc<AtomicBool>,
-    running: AtomicBool,
-}
 
 // ---------------------------------------------------------------------------
 // Sweep parameters
@@ -323,7 +318,7 @@ pub enum ExpectedBehavior {
     MemoryCell,
     Flipflop1,
     /// Ternary toggle flip-flop with synchronous reset (columns T, R, Q); scored sequentially:
-    /// R = -1 (A) resets Q to -1, otherwise (R = +1) T = -1 holds, T = +1 toggles and T = 0 clears Q to 0.
+    /// R = -1 resets Q to -1, otherwise (R = +1) T = -1 holds, T = +1 toggles and T = 0 clears Q to 0.
     TernaryFlipflop,
 }
 
@@ -900,7 +895,7 @@ fn validate_axis(nominal: &QCADesign, axis: &SweepAxis) -> Result<(SweepTarget, 
     Ok((target, nominal_value))
 }
 
-fn run_sweep(
+pub fn run_sweep(
     app: &AppHandle,
     nominal_raw: Value,
     nominal: QCADesign,
@@ -1106,31 +1101,6 @@ fn run_sweep(
         cancelled,
         duration_ms: started.elapsed().as_millis() as u64,
     })
-}
-
-#[tauri::command(async)]
-pub fn run_robustness_analysis(
-    app: AppHandle,
-    qca_design: Value,
-    config: RobustnessConfig,
-) -> Result<RobustnessResult, String> {
-    let nominal: QCADesign = serde_json::from_value(qca_design.clone())
-        .map_err(|e| format!("Invalid design: {}", e))?;
-    let state = app.state::<RobustnessState>();
-    if state.running.swap(true, Ordering::SeqCst) {
-        return Err("A robustness analysis is already running".into());
-    }
-    state.cancel.store(false, Ordering::SeqCst);
-    let result = run_sweep(&app, qca_design, nominal, config, state.cancel.clone());
-    state.running.store(false, Ordering::SeqCst);
-    result
-}
-
-#[tauri::command]
-pub fn cancel_robustness_analysis(app: AppHandle) {
-    app.state::<RobustnessState>()
-        .cancel
-        .store(true, Ordering::SeqCst);
 }
 
 #[cfg(test)]

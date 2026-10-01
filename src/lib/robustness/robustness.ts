@@ -17,7 +17,8 @@ export type ExpectedBehavior =
 	| "inverter"
 	| "majority"
 	| "memory_cell"
-	| "flipflop1";
+	| "flipflop1"
+	| "ternary_flipflop";
 
 export interface ExpectedBehaviorInfo {
 	id: ExpectedBehavior;
@@ -60,6 +61,12 @@ export const EXPECTED_BEHAVIORS: ExpectedBehaviorInfo[] = [
 		id: "flipflop1",
 		name: "Flip-flop 1",
 		description: "Three columns (Flip, G1, Q).",
+	},
+	{
+		id: "ternary_flipflop",
+		name: "Ternary T flip-flop with reset",
+		description:
+			"Three columns (T, R, Q), scored sequentially: R = A resets Q to A; otherwise T = A holds, T = B toggles, T = C clears.",
 	},
 ];
 
@@ -226,6 +233,7 @@ export function validateColumns(
 				: `Needs exactly 4 input/output cells, the design has ${n}.`;
 		case "memory_cell":
 		case "flipflop1":
+		case "ternary_flipflop":
 			return n === 3
 				? undefined
 				: `Needs exactly 3 input/output cells, the design has ${n}.`;

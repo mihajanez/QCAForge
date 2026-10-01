@@ -1,0 +1,16 @@
+[package]
+name = "qcaforge-robustness"
+version = "0.4.0"
+edition = "2021"
+
+[dependencies]
+qca-core = { git = "https://github.com/mihajanez/QCASim.git", rev = "df029e26d76178c84f41d9afe91ca1734adf20f0" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+
+[profile.release]
+opt-level = 3
+
+# Standalone crate (not a member of the QCAForge workspace)
+[workspace]

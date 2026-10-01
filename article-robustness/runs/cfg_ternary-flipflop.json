@@ -1,0 +1,1 @@
+{"x_axis": {"parameter": "geometry.cell_size", "values": [60.0]}, "y_axis": {"parameter": "geometry.dot_radius", "values": [14.0]}, "expected_behavior": "ternary_flipflop", "cell_clock_delays": {"R": 1, "Q": 1}, "thresholds": {"clock": 0.05, "logical": 0.05, "value": 0.8}, "output_dir": null, "base_name": "ff", "max_threads": 1}

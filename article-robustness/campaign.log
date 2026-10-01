@@ -1,0 +1,21 @@
+start Tue Sep 29 08:34:48 UTC 2026
+e1_line 172s done: 189 points, wall 172.3s, cpu-sum 344.0s, errors 0
+e1_line-clocked 151s done: 189 points, wall 150.9s, cpu-sum 300.6s, errors 0
+e1_inverter 965s done: 189 points, wall 965.2s, cpu-sum 1929.9s, errors 0
+e1_majority-diagonal (see err log) done: 189 points, wall 1395.5s, cpu-sum 2789.4s, errors 0
+e1_majority (see err log) done: 189 points, wall 1759.6s, cpu-sum 3502.8s, errors 0
+e2_line 21s done: 52 points, wall 21.3s, cpu-sum 42.2s, errors 0
+e2_inverter 96s done: 52 points, wall 95.8s, cpu-sum 190.7s, errors 0
+e2_majority-diagonal 178s done: 52 points, wall 177.5s, cpu-sum 354.2s, errors 0
+e2_majority 262s done: 52 points, wall 261.8s, cpu-sum 521.2s, errors 0
+e3_line 26s done: 13 points, wall 26.6s, cpu-sum 52.2s, errors 0
+e3_line-clocked 9s done: 13 points, wall 9.1s, cpu-sum 17.2s, errors 0
+e3_inverter 89s done: 13 points, wall 89.0s, cpu-sum 176.2s, errors 0
+e3_majority-diagonal 57s done: 13 points, wall 56.7s, cpu-sum 108.7s, errors 0
+e3_majority 148s done: 13 points, wall 147.7s, cpu-sum 276.3s, errors 0
+end Tue Sep 29 10:06:33 UTC 2026
+defects 265s
+defects-end Tue Sep 29 10:11:03 UTC 2026
+e5_memory-cell 420s done: 55 points, wall 419.7s, cpu-sum 797.1s, errors 0
+all-end Tue Sep 29 10:18:03 UTC 2026
+rerun 2026-09-29: clocked wire with a single output cell (Out, delay 1 cycle): e1 133s done: 189 points, wall 133.6s, cpu-sum 267.0s, errors 0;e3 9s done: 13 points, wall 9.1s, cpu-sum 17.0s, errors 0;done;

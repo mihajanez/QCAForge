@@ -1,0 +1,1 @@
+{"x_axis": {"parameter": "model.relative_permitivity", "values": [9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0]}, "y_axis": null, "expected_behavior": "wire", "cell_clock_delays": {}, "thresholds": {"clock": 0.05, "logical": 0.05, "value": 0.8}, "output_dir": null, "base_name": "d", "max_threads": 2}
