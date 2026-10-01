@@ -13,3 +13,6 @@ Cargo.lock
 
 *.qcs
 *.qcd
+
+# Claude outputs
+Claude outputs/
