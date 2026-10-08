@@ -1,6 +1,6 @@
 # QCAForge 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Build and Test](https://github.com/mihoci10/QCAForge/actions/workflows/ci.yaml/badge.svg)](https://github.com/mihoci10/QCAForge/actions/workflows/ci.yaml)
+[![Build and Test](https://github.com/mihajanez/QCAForge/actions/workflows/ci.yaml/badge.svg)](https://github.com/mihajanez/QCAForge/actions/workflows/ci.yaml)
 
 **QCAForge** is a modern desktop application for designing and simulating Quantum Cellular Automata (QCA) circuits. Built with Tauri, Svelte, and Rust, it provides a comprehensive environment for QCA research, design, and analysis.
 
@@ -13,7 +13,7 @@ Create complex QCA circuits with our intuitive visual designer:
 
 - Interactive visual QCA circuit designer
 - Support for various cell architectures
-- Integrated simulation engine powered by the [QCASim](https://github.com/mihoci10/QCASim) library
+- Integrated simulation engine powered by the [QCASim](https://github.com/mihajanez/QCASim) library
 - Real-time simulation progress tracking
 
 ### 📊 **Analysis & Visualization**
@@ -24,6 +24,12 @@ Visualize and analyze your simulation data with powerful tools:
 - Comprehensive simulation result analysis with multiple visualization options
 - Truth table analysis
 - Data export capabilities
+
+## Download
+
+Installers for Windows (`.exe`), macOS (Apple silicon and Intel, `.dmg`) and Linux (`.deb`, `.rpm`, `.AppImage`) are attached to every [release](https://github.com/mihajanez/QCAForge/releases). They are built automatically by the *Deploy QCAForge App* workflow (`.github/workflows/tauri-deploy.yaml`) whenever a version tag `v*` is pushed; the *Build and Test QCAForge App* workflow (`.github/workflows/ci.yaml`) builds the application and runs the frontend and Rust unit tests on every push to `main` and on every pull request.
+
+Releases up to v0.4.0 (2025) are also available from the original repository, [mihoci10/QCAForge](https://github.com/mihoci10/QCAForge/releases).
 
 ## Installation & Development
 
@@ -36,7 +42,7 @@ Visualize and analyze your simulation data with powerful tools:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/mihoci10/QCAForge.git
+   git clone https://github.com/mihajanez/QCAForge.git
    cd QCAForge
    ```
 

@@ -9,10 +9,12 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 target/
-Cargo.lock
 
 *.qcs
 *.qcd
+!examples/*.qcd
 
 # Claude outputs
 Claude outputs/
+# the workspace lock file is the one in the repository root
+/src-tauri/Cargo.lock

@@ -5,6 +5,10 @@ on:
   push:
     tags:
       - 'v*'
+
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -45,8 +49,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Run unit tests
-        run: npm test
+      - name: Run frontend unit tests
+        run: npx vitest run
 
       - name: Cache rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -57,8 +61,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: ${{ matrix.args }}
-          tagName: v__VERSION__ 
+          tagName: v__VERSION__
           releaseName: "QCAForge v__VERSION__"
           releaseBody: "See the assets to download this version and install."
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false

@@ -47,12 +47,16 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Run unit tests
-        run: npm test
+      - name: Run frontend unit tests
+        run: npx vitest run
 
       - name: Cache rust dependencies
         uses: Swatinem/rust-cache@v2
 
       - name: Build Backend
         run: |
-          cargo build --release ${{ matrix.args }}
+          cargo build --release --locked ${{ matrix.args }}
+
+      - name: Run Rust unit tests
+        run: |
+          cargo test --release --locked ${{ matrix.args }}
