@@ -1,7 +1,7 @@
 # Robustness and fault-tolerance campaign (article Section 4)
 
-All runs were produced with the QCAForge robustness engine (headless runner in
-`tools/robustness-cli`) on a 2-vCPU Linux VM (Intel Xeon 2.1 GHz), 2 worker
+All runs were produced with the QCAForge robustness engine (headless runner,
+then in `tools/robustness-cli`, now `qca-sim robustness` of QCASim) on a 2-vCPU Linux VM (Intel Xeon 2.1 GHz), 2 worker
 threads, 29 Sep 2026. Total simulation wall time: 6015 s (100 min), 1345
 simulations, 3.3 core-hours (see `campaign.log`).
 
@@ -30,3 +30,13 @@ simulations, 3.3 core-hours (see `campaign.log`).
 - Operation: R = A (-1) resets Q to A; otherwise T = A holds, T = B toggles, T = C clears to 0.
 - ICHA result at 60/14 and 80/16: 15 of 16 transitions correct; the neutral state produced by a
   clear is not retained by the following hold (lost at the diagonal steps into the gate corners).
+
+## Reproducing the campaign on an HPC cluster
+
+`frida-campaign.tsv` lists the sweeps of this campaign for
+`hpc/frida/submit-campaign.sh` of [QCASim](https://github.com/mihajanez/QCASim)
+(see its `hpc/frida/README.md`):
+
+```bash
+~/QCASim/hpc/frida/submit-campaign.sh frida-campaign.tsv
+```
