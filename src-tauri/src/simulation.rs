@@ -4,8 +4,8 @@ use qca_core::{
     design::file::QCADesign,
     simulation::{
         bistable::BistableModel, file::write_to_file, get_num_inputs, icha::ICHAModel,
-        model::SimulationModelTrait, run_simulation_async,
-        settings::OptionsList, SimulationProgress,
+        model::SimulationModelTrait, run_simulation_async, settings::OptionsList,
+        SimulationProgress,
     },
 };
 use serde::Serialize;
@@ -22,10 +22,7 @@ pub struct SimulationModelDescriptor {
 }
 
 fn get_available_sim_models() -> Vec<Box<dyn SimulationModelTrait>> {
-    return vec![
-        Box::new(BistableModel::new()),
-        Box::new(ICHAModel::new()),
-    ];
+    return vec![Box::new(BistableModel::new()), Box::new(ICHAModel::new())];
 }
 
 #[tauri::command]
@@ -68,7 +65,10 @@ pub fn prepare_simulation(
         .simulation_settings
         .simulation_model_settings
         .get(&sim_model_id)
-        .ok_or(format!("Design has no settings for model '{}'", sim_model_id))?;
+        .ok_or(format!(
+            "Design has no settings for model '{}'",
+            sim_model_id
+        ))?;
 
     let mut model = create_sim_model(sim_model_id).ok_or("No model with such id exists")?;
     model
