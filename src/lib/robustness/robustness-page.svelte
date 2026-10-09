@@ -5,6 +5,7 @@
 	import { basename, dirname, join } from "@tauri-apps/api/path";
 	import { open, save } from "@tauri-apps/plugin-dialog";
 	import {
+		mkdir,
 		readTextFile,
 		writeFile,
 		writeTextFile,
@@ -31,6 +32,7 @@
 	import { lastDirectoryManager } from "$lib/last-directory";
 	import {
 		loadDesignFromFile,
+		serializeQCADesignFile,
 		type QCADesign,
 		type QCADesignFile,
 	} from "$lib/qca-design";
@@ -62,6 +64,15 @@
 	import {
 		buildGrid,
 		cancelRobustnessAnalysis,
+		CLUSTER_CONFIG_FILE,
+		CLUSTER_DESIGN_FILE,
+		CLUSTER_README_FILE,
+		CLUSTER_SUBMIT_FILE,
+		clusterConfig,
+		clusterReadme,
+		clusterSubmitScript,
+		defaultClusterTasks,
+		mergeRunFiles,
 		DEFAULT_THRESHOLDS,
 		EVENT_ROBUSTNESS_POINT,
 		EVENT_ROBUSTNESS_PROGRESS,
@@ -238,7 +249,8 @@
 			: xValues.length * yValues.length,
 	);
 
-	const configErrors: string[] = $derived.by(() => {
+	/** Problems that prevent both a local run and a cluster export. */
+	const sweepErrors: string[] = $derived.by(() => {
 		const errors: string[] = [];
 		if (!snapshot) {
 			errors.push(
@@ -254,9 +266,15 @@
 		if (typeof yValues === "string") errors.push(`Parameter 2: ${yValues}`);
 		if (useYAxis && xAxis.parameter === yAxis.parameter)
 			errors.push("Choose two different parameters.");
-		if (totalPoints > 10_000) errors.push("The sweep has more than 10000 points.");
 		const columnError = validateColumns(expectedBehavior, columns);
 		if (columnError) errors.push(columnError);
+		return errors;
+	});
+
+	const configErrors: string[] = $derived.by(() => {
+		const errors = [...sweepErrors];
+		if (snapshot && totalPoints > 10_000)
+			errors.push("The sweep has more than 10000 points; export it for a cluster instead.");
 		if (keepFiles && !outputDir) errors.push("Choose an output folder.");
 		return errors;
 	});
@@ -319,19 +337,17 @@
 		};
 	}
 
-	async function startAnalysis() {
-		await refreshSnapshot();
-		if (configErrors.length > 0 || !snapshot) {
-			toast.error(configErrors[0] ?? "Invalid configuration");
-			return;
-		}
-		const xs = xValues as number[];
-		const ys = useYAxis ? (yValues as number[]) : undefined;
+	async function designBaseName(): Promise<string> {
 		const designFile = source === "current" ? get(design_filename) : sourceFile;
-		const baseName = designFile
+		return designFile
 			? (await basename(designFile)).replace(/\.[^./\\]+$/, "")
 			: "design";
+	}
 
+	async function buildConfig(): Promise<RobustnessConfig> {
+		const xs = xValues as number[];
+		const ys = useYAxis ? (yValues as number[]) : undefined;
+		const baseName = await designBaseName();
 		const config: RobustnessConfig = {
 			x_axis: { parameter: xAxis.parameter, values: xs },
 			y_axis: ys ? { parameter: yAxis.parameter, values: ys } : null,
@@ -342,9 +358,21 @@
 			thresholds: { ...thresholds },
 			output_dir: keepFiles ? (outputDir ?? null) : null,
 			base_name: baseName,
-			designer_properties: snapshot.designer_properties ?? {},
+			designer_properties: snapshot?.designer_properties ?? {},
 			max_threads: maxThreads > 0 ? maxThreads : null,
 		};
+		return config;
+	}
+
+	async function startAnalysis() {
+		await refreshSnapshot();
+		if (configErrors.length > 0 || !snapshot) {
+			toast.error(configErrors[0] ?? "Invalid configuration");
+			return;
+		}
+		const xs = xValues as number[];
+		const ys = useYAxis ? (yValues as number[]) : undefined;
+		const config = await buildConfig();
 
 		run = {
 			format: ROBUSTNESS_RUN_FORMAT,
@@ -425,6 +453,76 @@
 		}
 	}
 
+	// ----- Cluster (HPC) export ---------------------------------------------
+	let clusterCpus = $state(16);
+	let clusterTasks = $state(0);
+	let clusterPartition = $state("amd");
+	let clusterTime = $state("04:00:00");
+	const suggestedTasks = $derived(defaultClusterTasks(totalPoints, clusterCpus));
+	const clusterErrors: string[] = $derived.by(() => {
+		const errors = [...sweepErrors];
+		if (!(clusterCpus >= 1)) errors.push("Choose at least one CPU per task.");
+		if (!/^(\d+-)?\d{1,2}(:\d{2}){0,2}$/.test(clusterTime.trim()))
+			errors.push("Time limit must look like 04:00:00 or 1-00:00:00.");
+		return errors;
+	});
+
+	/**
+	 * Writes a folder with the design, the sweep configuration and a submit
+	 * script for `hpc/frida/submit-sweep.sh` of QCASim (Slurm job array).
+	 */
+	async function exportClusterJob() {
+		await refreshSnapshot();
+		if (clusterErrors.length > 0 || !snapshot) {
+			toast.error(clusterErrors[0] ?? "Invalid configuration");
+			return;
+		}
+		const parent = await open({
+			directory: true,
+			// The job is written into a new subfolder of the chosen folder.
+			recursive: true,
+			title: "Folder in which to create the cluster job",
+			defaultPath: await lastDirectoryManager.getDirectory("robustness"),
+		});
+		if (!parent) return;
+		const name = await designBaseName();
+		const xName = xAxis.parameter.split(/[.:]/).pop();
+		const yName = useYAxis ? "-" + yAxis.parameter.split(/[.:]/).pop() : "";
+		const dir = await join(parent as string, `${name}-${xName}${yName}`);
+		const tasks = clusterTasks > 0 ? Math.min(clusterTasks, totalPoints) : suggestedTasks;
+		const options = {
+			name,
+			points: totalPoints,
+			cpusPerTask: Math.round(clusterCpus),
+			tasks,
+			partition: clusterPartition.trim() || "amd",
+			timeLimit: clusterTime.trim(),
+		};
+		try {
+			await mkdir(dir, { recursive: true });
+			const config = await buildConfig();
+			await writeTextFile(
+				await join(dir, CLUSTER_DESIGN_FILE),
+				serializeQCADesignFile({ ...snapshot, design: designForRun(snapshot) }),
+			);
+			await writeTextFile(
+				await join(dir, CLUSTER_CONFIG_FILE),
+				JSON.stringify(clusterConfig(config), null, 2) + "\n",
+			);
+			await writeTextFile(await join(dir, CLUSTER_SUBMIT_FILE), clusterSubmitScript(options));
+			await writeTextFile(await join(dir, CLUSTER_README_FILE), clusterReadme(options));
+			lastDirectoryManager.setDirectoryFromFilePath(
+				"robustness",
+				await join(dir, CLUSTER_SUBMIT_FILE),
+			);
+			toast.success(
+				`Cluster job written to ${dir}: ${totalPoints} points in ${tasks} task(s). Copy the folder to the cluster and run ./submit.sh there.`,
+			);
+		} catch (error) {
+			toast.error(`Could not write the cluster job: ${error}`);
+		}
+	}
+
 	async function cancelAnalysis() {
 		cancelling = true;
 		await cancelRobustnessAnalysis();
@@ -490,6 +588,17 @@
 				const { run: merged, warnings } = mergeCsvFiles(contents);
 				warnings.forEach((w) => toast.warning(w));
 				run = merged;
+			} else if (files.length > 1) {
+				// Partial results of the tasks of a cluster job array.
+				const contents = await Promise.all(files.map((f) => readTextFile(f)));
+				const first = parseRunJson(contents[0]);
+				const merged = await mergeRunFiles(contents, first.name);
+				if (merged.missing > 0)
+					toast.warning(
+						`Merged ${merged.runs} files: ${merged.missing} of ${merged.points + merged.missing} points are still missing.`,
+					);
+				else toast.success(`Merged ${merged.runs} files (${merged.points} points).`);
+				run = merged.run;
 			} else {
 				run = parseRunJson(await readTextFile(files[0]));
 			}
@@ -796,6 +905,53 @@
 						</Accordion.Content>
 					</Accordion.Item>
 
+					<Accordion.Item value="cluster">
+						<Accordion.Trigger>
+							<div class="flex items-center gap-2">
+								<Icon icon="material-symbols:dns-outline" class="h-4 w-4" />
+								Cluster (HPC)
+							</div>
+						</Accordion.Trigger>
+						<Accordion.Content class="flex flex-col gap-3 p-1">
+							<p class="text-xs text-muted-foreground">
+								Export the sweep as a Slurm job array, e.g. for the FRIDA cluster.
+								Each task simulates every N-th point; the partial results are merged
+								into one run file that opens here.
+							</p>
+							<div class="grid grid-cols-2 gap-2">
+								<div class="flex flex-col gap-1">
+									<Label for="hpc-cpus" class="text-xs">CPUs per task</Label>
+									<Input id="hpc-cpus" type="number" min="1" step="1" class="h-8 px-2" bind:value={clusterCpus} />
+								</div>
+								<div class="flex flex-col gap-1">
+									<Label for="hpc-tasks" class="text-xs">Tasks (0 = {suggestedTasks})</Label>
+									<Input id="hpc-tasks" type="number" min="0" step="1" class="h-8 px-2" bind:value={clusterTasks} />
+								</div>
+								<div class="flex flex-col gap-1">
+									<Label for="hpc-partition" class="text-xs">Partition</Label>
+									<Input id="hpc-partition" class="h-8 px-2" bind:value={clusterPartition} />
+								</div>
+								<div class="flex flex-col gap-1">
+									<Label for="hpc-time" class="text-xs">Time limit per task</Label>
+									<Input id="hpc-time" class="h-8 px-2" bind:value={clusterTime} />
+								</div>
+							</div>
+							{#if clusterErrors.length > 0}
+								<p class="text-xs text-destructive">{clusterErrors[0]}</p>
+							{/if}
+							<Button
+								size="sm"
+								variant="outline"
+								onclick={exportClusterJob}
+								disabled={clusterErrors.length > 0 || running}
+								title="Write design.qcd, sweep.json and submit.sh for hpc/frida/submit-sweep.sh (QCASim)"
+							>
+								<Icon icon="material-symbols:upload" />
+								Export for cluster…
+							</Button>
+						</Accordion.Content>
+					</Accordion.Item>
+
 					<Accordion.Item value="figure">
 						<Accordion.Trigger>
 							<div class="flex items-center gap-2">
@@ -917,7 +1073,7 @@
 						<Checkbox id="show-nominal" bind:checked={showNominal} />
 						<Label for="show-nominal" class="text-xs">Nominal</Label>
 					</div>
-					<Button size="icon" variant="ghost" title="Open results (JSON or truth_analysis.csv)" onclick={openResults} disabled={running}>
+					<Button size="icon" variant="ghost" title="Open results (JSON or truth_analysis.csv); several JSON files of one sweep are merged" onclick={openResults} disabled={running}>
 						<Icon icon="material-symbols:folder-open-outline" class="h-5 w-5" />
 					</Button>
 					<Button size="icon" variant="ghost" title="Save results (JSON or CSV)" onclick={saveResults} disabled={!run || running}>

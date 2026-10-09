@@ -3,9 +3,11 @@ use std::fs::File;
 use qca_core::{
     design::file::QCADesign,
     simulation::{
-        bistable::BistableModel, file::write_to_file, get_num_inputs, icha::ICHAModel,
-        model::SimulationModelTrait, run_simulation_async,
-        settings::OptionsList, SimulationProgress,
+        file::write_to_file,
+        models::{available_models, prepare_simulation},
+        run_simulation_async,
+        settings::OptionsList,
+        SimulationProgress,
     },
 };
 use serde::Serialize;
@@ -21,16 +23,9 @@ pub struct SimulationModelDescriptor {
     clock_generator_settings: String,
 }
 
-fn get_available_sim_models() -> Vec<Box<dyn SimulationModelTrait>> {
-    return vec![
-        Box::new(BistableModel::new()),
-        Box::new(ICHAModel::new()),
-    ];
-}
-
 #[tauri::command]
 pub fn get_sim_models() -> Vec<SimulationModelDescriptor> {
-    get_available_sim_models()
+    available_models()
         .iter()
         .map(|model| SimulationModelDescriptor {
             model_id: model.get_unique_id(),
@@ -41,61 +36,6 @@ pub fn get_sim_models() -> Vec<SimulationModelDescriptor> {
             clock_generator_settings: model.serialize_clock_generator_settings().unwrap(),
         })
         .collect()
-}
-
-pub fn create_sim_model(sim_model_id: String) -> Option<Box<dyn SimulationModelTrait>> {
-    let models = get_available_sim_models();
-    for model in models {
-        if model.get_unique_id() == sim_model_id {
-            return Some(model);
-        }
-    }
-    None
-}
-
-/// Builds the simulation model selected in `qca_design` (with its model and
-/// clock generator settings applied) and validates the custom input
-/// sequence, if one is enabled.
-pub fn prepare_simulation(
-    qca_design: &QCADesign,
-) -> Result<(Box<dyn SimulationModelTrait>, Option<Vec<Vec<usize>>>), String> {
-    let sim_model_id = qca_design
-        .simulation_settings
-        .selected_simulation_model_id
-        .clone()
-        .ok_or("No simulation model is selected")?;
-    let sim_settings = qca_design
-        .simulation_settings
-        .simulation_model_settings
-        .get(&sim_model_id)
-        .ok_or(format!("Design has no settings for model '{}'", sim_model_id))?;
-
-    let mut model = create_sim_model(sim_model_id).ok_or("No model with such id exists")?;
-    model
-        .deserialize_model_settings(&sim_settings.model_settings.to_string())
-        .map_err(|e| format!("Error parsing model settings: {}", e))?;
-    model
-        .deserialize_clock_generator_settings(&sim_settings.clock_generator_settings.to_string())
-        .map_err(|e| format!("Error parsing clock generator settings: {}", e))?;
-
-    let custom_input_sequence = if qca_design.simulation_settings.use_custom_input_sequence {
-        let sequence = qca_design.simulation_settings.custom_input_sequence.clone();
-        if sequence.is_empty() {
-            return Err("Custom input sequence is enabled but has no vectors".into());
-        }
-        let num_inputs = get_num_inputs(&qca_design.layers);
-        if sequence.iter().any(|vector| vector.len() != num_inputs) {
-            return Err(format!(
-                "Every vector in the custom input sequence must have exactly {} value(s), one per input",
-                num_inputs
-            ));
-        }
-        Some(sequence)
-    } else {
-        None
-    };
-
-    Ok((model, custom_input_sequence))
 }
 
 #[tauri::command(async)]
@@ -115,15 +55,13 @@ pub fn run_sim_model(
         run_simulation_async(model, layers, architectures, custom_input_sequence);
 
     for progress in progress_rx {
-        match progress {
-            SimulationProgress::Running {
-                current_sample,
-                total_samples,
-            } => {
-                let percent = (current_sample as f32 / total_samples as f32) * 100.0;
-                app.emit("simulationProgress", percent).unwrap();
-            }
-            _ => {}
+        if let SimulationProgress::Running {
+            current_sample,
+            total_samples,
+        } = progress
+        {
+            let percent = (current_sample as f32 / total_samples as f32) * 100.0;
+            app.emit("simulationProgress", percent).unwrap();
         }
     }
 

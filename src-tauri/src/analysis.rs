@@ -76,10 +76,10 @@ pub fn handle_load_sim(request: Request<Vec<u8>>) -> Result<Vec<u8>, String> {
     let mut result: Vec<f64> = Vec::with_capacity(num_samples * num_floats);
 
     for clock in &data.clock_data {
-        result.extend_from_slice(&clock);
+        result.extend_from_slice(clock);
     }
 
-    if data_indices.len() == 0 {
+    if data_indices.is_empty() {
         data_indices = (0..data.metadata.stored_cells.len()).collect();
     }
     for i in data_indices {

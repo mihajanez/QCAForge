@@ -4,6 +4,9 @@ import { expect, test, vi } from "vitest";
 vi.mock("$lib/last-directory", () => ({ lastDirectoryManager: {} }));
 import {
 	buildGrid,
+	clusterConfig,
+	clusterSubmitScript,
+	defaultClusterTasks,
 	getStoredColumns,
 	mergeCsvFiles,
 	rangeValues,
@@ -166,4 +169,45 @@ test("model parameter export has the structure model_params.py reads", async () 
 	}
 	// Round-trips through JSON (Maps would silently become {}).
 	expect(JSON.parse(JSON.stringify(exported)).cell_architectures.arch.side_length).toBe(60);
+});
+
+test("cluster job export", () => {
+	expect(defaultClusterTasks(121, 16)).toBe(2);
+	expect(defaultClusterTasks(3, 16)).toBe(1);
+	expect(defaultClusterTasks(100000, 1)).toBe(1000);
+	expect(defaultClusterTasks(5, 1)).toBe(2);
+
+	const config = clusterConfig({
+		x_axis: { parameter: "geometry.cell_size", values: [50, 60] },
+		y_axis: null,
+		expected_behavior: "wire",
+		cell_clock_delays: {},
+		thresholds: { clock: 0.05, logical: 0.05, value: 0.8 },
+		output_dir: "/local/only",
+		base_name: "line",
+		designer_properties: { camera_zoom_enabled: true },
+		max_threads: 8,
+	});
+	// Local-only settings are not exported; the cluster decides threads and files.
+	expect(Object.keys(config).sort()).toEqual([
+		"base_name",
+		"cell_clock_delays",
+		"expected_behavior",
+		"thresholds",
+		"x_axis",
+		"y_axis",
+	]);
+
+	const script = clusterSubmitScript({
+		name: "it's a test",
+		points: 10,
+		cpusPerTask: 4,
+		tasks: 3,
+		partition: "amd",
+		timeLimit: "04:00:00",
+	});
+	expect(script.startsWith("#!/usr/bin/env bash")).toBe(true);
+	expect(script).toContain("--name 'it'\"'\"'s a test' \\\n");
+	expect(script).toContain("--tasks 3 \\\n");
+	expect(script.trimEnd().endsWith("design.qcd sweep.json")).toBe(true);
 });

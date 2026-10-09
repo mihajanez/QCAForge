@@ -98,6 +98,24 @@ export interface RobustnessConfig {
 	base_name: string;
 	designer_properties: unknown;
 	max_threads: number | null;
+	/** Only this slice of the sweep (set by `qca-sim robustness run --slice`). */
+	slice?: SweepSlice | null;
+}
+
+/** Every `count`-th point of the sweep grid, starting at point `index`. */
+export interface SweepSlice {
+	index: number;
+	count: number;
+}
+
+/** Provenance of a slice of a run computed on a cluster. */
+export interface RunSliceInfo {
+	index: number;
+	count: number;
+	points: number;
+	duration_ms: number;
+	host?: string;
+	job_id?: string;
 }
 
 export interface TruthTableData {
@@ -167,6 +185,106 @@ export interface RobustnessRun {
 	duration_ms: number;
 	/** Set when the run was merged from truth_analysis.csv files. */
 	source_files?: string[];
+	/** Sum of the simulation times of all points. */
+	cpu_ms?: number;
+	/** The slices (cluster array tasks) a merged run was combined from. */
+	slices?: RunSliceInfo[];
+}
+
+export interface MergedRuns {
+	run: RobustnessRun;
+	runs: number;
+	points: number;
+	duplicates: number;
+	missing: number;
+}
+
+/**
+ * Merges run files of one sweep, e.g. the partial results
+ * (`run.part-<k>-of-<N>.json`) of the tasks of a cluster job array.
+ */
+export function mergeRunFiles(
+	contents: string[],
+	name: string,
+): Promise<MergedRuns> {
+	return invoke("merge_robustness_runs", { contents, name });
+}
+
+/** Files of a cluster job folder: see `hpc/frida/README.md` in QCASim. */
+export const CLUSTER_DESIGN_FILE = "design.qcd";
+export const CLUSTER_CONFIG_FILE = "sweep.json";
+export const CLUSTER_SUBMIT_FILE = "submit.sh";
+export const CLUSTER_README_FILE = "README.txt";
+
+export interface ClusterJobOptions {
+	name: string;
+	points: number;
+	cpusPerTask: number;
+	tasks: number;
+	partition: string;
+	timeLimit: string;
+}
+
+/** The sweep configuration as `qca-sim robustness run` reads it. */
+export function clusterConfig(config: RobustnessConfig): object {
+	const { designer_properties, max_threads, output_dir, slice, ...rest } = config;
+	return rest;
+}
+
+/** Default number of array tasks: about four points per CPU. */
+export function defaultClusterTasks(points: number, cpusPerTask: number): number {
+	const tasks = Math.ceil(points / (4 * Math.max(1, cpusPerTask)));
+	return Math.max(1, Math.min(points, tasks, 1000));
+}
+
+function shellQuote(value: string): string {
+	return `'${value.replace(/'/g, `'"'"'`)}'`;
+}
+
+export function clusterSubmitScript(options: ClusterJobOptions): string {
+	return `#!/usr/bin/env bash
+# Submits this robustness sweep to a Slurm cluster (FRIDA, https://docs.rdc.si/).
+# Written by QCAForge; see hpc/frida/README.md in QCASim
+# (https://github.com/mihajanez/QCASim/tree/master/hpc/frida).
+#
+#   ./submit.sh                 # with the settings below
+#   ./submit.sh -t 08:00:00     # further options are passed to submit-sweep.sh
+set -euo pipefail
+cd "$(dirname "\${BASH_SOURCE[0]}")"
+QCASIM_HPC=\${QCASIM_HPC:-$HOME/QCASim/hpc/frida}
+exec "$QCASIM_HPC/submit-sweep.sh" \\
+    --name ${shellQuote(options.name)} \\
+    --tasks ${options.tasks} \\
+    --cpus ${options.cpusPerTask} \\
+    --partition ${shellQuote(options.partition)} \\
+    --time ${shellQuote(options.timeLimit)} \\
+    "$@" \\
+    ${CLUSTER_DESIGN_FILE} ${CLUSTER_CONFIG_FILE}
+`;
+}
+
+export function clusterReadme(options: ClusterJobOptions): string {
+	return `Robustness sweep "${options.name}" for a Slurm cluster (exported by QCAForge)
+
+${options.points} design variants, split into ${options.tasks} array task(s) with ${options.cpusPerTask} CPU(s) each.
+
+  ${CLUSTER_DESIGN_FILE}   nominal design
+  ${CLUSTER_CONFIG_FILE}   sweep configuration (qca-sim robustness run)
+  ${CLUSTER_SUBMIT_FILE}    submits the sweep with hpc/frida/submit-sweep.sh
+
+On FRIDA (once: git clone https://github.com/mihajanez/QCASim ~/QCASim && ~/QCASim/hpc/frida/install.sh):
+
+  scp -r <this folder> login-frida.rdc.si:/shared/workspace/<account>/
+  ssh login-frida.rdc.si
+  cd /shared/workspace/<account>/<this folder> && ./submit.sh
+
+The merged result is written to <run directory>/run.json; copy it back and open it in
+QCAForge (Robustness -> Open results). Partial results (parts/run.part-*.json) can be
+opened together as well; QCAForge merges them.
+
+Without a cluster, the same sweep runs on any computer with
+  qca-sim robustness run ${CLUSTER_DESIGN_FILE} ${CLUSTER_CONFIG_FILE} -o run.json
+`;
 }
 
 /**

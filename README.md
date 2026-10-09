@@ -25,6 +25,11 @@ Visualize and analyze your simulation data with powerful tools:
 - Truth table analysis
 - Data export capabilities
 
+### 🛡️ **Robustness analysis and HPC**
+- Sweeps of one or two design or model parameters (cell size, dot radius, cell displacement, permittivity, …), with every variant simulated and scored against the expected logic behaviour
+- Accuracy heat maps and contour plots, per-point truth tables, figure export
+- **Export for cluster**: writes a Slurm job-array job for the [FRIDA](https://docs.rdc.si/) cluster (or any Slurm cluster), run by `qca-sim robustness` from [QCASim](https://github.com/mihajanez/QCASim) with the same engine as the application; see the [HPC guide](https://github.com/mihajanez/QCASim/blob/master/hpc/frida/README.md). Partial results of a running or finished job open together and are merged.
+
 ## Download
 
 Installers for Windows (`.exe`), macOS (Apple silicon and Intel, `.dmg`) and Linux (`.deb`, `.rpm`, `.AppImage`) are attached to every [release](https://github.com/mihajanez/QCAForge/releases). They are built automatically by the *Deploy QCAForge App* workflow (`.github/workflows/tauri-deploy.yaml`) whenever a version tag `v*` is pushed; the *Build and Test QCAForge App* workflow (`.github/workflows/ci.yaml`) builds the application and runs the frontend and Rust unit tests on every push to `main` and on every pull request.

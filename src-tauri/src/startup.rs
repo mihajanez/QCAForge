@@ -75,7 +75,7 @@ pub async fn backend_startup(app: AppHandle) -> Result<(), String> {
         Box::pin(load_simulation_models(app.clone())),
         Box::pin(analyze_system(app.clone())),
     ];
-    let total_tasks = startup_tasks.iter().count();
+    let total_tasks = startup_tasks.len();
 
     for (i, startup_func) in startup_tasks.into_iter().enumerate() {
         let progress = (i as f32 / total_tasks as f32) * 100.0;
