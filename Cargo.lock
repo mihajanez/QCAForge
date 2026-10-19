@@ -3280,8 +3280,8 @@ dependencies = [
 
 [[package]]
 name = "qca-core"
-version = "0.4.0"
-source = "git+https://github.com/mihajanez/QCASim.git#46cd71e9a32507aa850b898d12fd6c012cb7a9fb"
+version = "0.4.1"
+source = "git+https://github.com/mihajanez/QCASim.git#6bc27c36f20d3288011fc56ad3082747307dac78"
 dependencies = [
  "chrono",
  "log",
