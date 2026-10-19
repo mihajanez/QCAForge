@@ -40,3 +40,18 @@ simulations, 3.3 core-hours (see `campaign.log`).
 ```bash
 ~/QCASim/hpc/frida/submit-campaign.sh frida-campaign.tsv
 ```
+
+## Influence of the cell update order (FRIDA campaign)
+
+Within a self-consistency iteration the ICHA model of QCACore updates the cells in place
+in the order in which they are stored in the design (`model.update_order = 0`, the
+setting used for all runs above). Since qca-core 0.4.0 the order is selectable
+(1 = reverse, 2 = random with `update_seed`, 3 = simultaneous/Jacobi with mixing).
+`designs/order/` contains the nominal designs with these settings, and
+`frida-order-campaign.tsv` re-runs the global geometry sweeps (and the memorizing cell)
+with every order, the full-resolution grids with the order-independent simultaneous update,
+and the ternary flip-flop with all four orders:
+
+```bash
+~/QCASim/hpc/frida/submit-campaign.sh frida-order-campaign.tsv
+```

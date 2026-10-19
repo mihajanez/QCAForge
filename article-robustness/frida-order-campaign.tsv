@@ -1,0 +1,55 @@
+# Influence of the cell update order of the ICHA model (QCASim >= qca-core 0.4.0, model.update_order):
+#   0 = sequential in storage order (default, used in the article so far; rows e1_* of frida-campaign.tsv)
+#   1 = reverse order, 2 = random order (reshuffled every iteration, seeds 1-5), 3 = simultaneous (Jacobi, mixing 0.5)
+# Submit with: ~/QCASim/hpc/frida/submit-campaign.sh frida-order-campaign.tsv
+# name                         design                                   configuration                            options
+e1_u1_line                     designs/order/line-u1.qcd                             runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u3_line                     designs/order/line-u3.qcd                             runs/cfg_e1_line.json                    -c 32 -t 1-00:00:00
+e1_u2s1_line                   designs/order/line-u2s1.qcd                           runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u2s2_line                   designs/order/line-u2s2.qcd                           runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u2s3_line                   designs/order/line-u2s3.qcd                           runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u2s4_line                   designs/order/line-u2s4.qcd                           runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u2s5_line                   designs/order/line-u2s5.qcd                           runs/cfg_e1_line.json                    -c 32 -t 04:00:00
+e1_u1_line-clocked             designs/order/line-clocked-u1.qcd                     runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u3_line-clocked             designs/order/line-clocked-u3.qcd                     runs/cfg_e1_line-clocked.json            -c 32 -t 1-00:00:00
+e1_u2s1_line-clocked           designs/order/line-clocked-u2s1.qcd                   runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u2s2_line-clocked           designs/order/line-clocked-u2s2.qcd                   runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u2s3_line-clocked           designs/order/line-clocked-u2s3.qcd                   runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u2s4_line-clocked           designs/order/line-clocked-u2s4.qcd                   runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u2s5_line-clocked           designs/order/line-clocked-u2s5.qcd                   runs/cfg_e1_line-clocked.json            -c 32 -t 04:00:00
+e1_u1_inverter                 designs/order/inverter-u1.qcd                         runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u3_inverter                 designs/order/inverter-u3.qcd                         runs/cfg_e1_inverter.json                -c 32 -t 1-00:00:00
+e1_u2s1_inverter               designs/order/inverter-u2s1.qcd                       runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u2s2_inverter               designs/order/inverter-u2s2.qcd                       runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u2s3_inverter               designs/order/inverter-u2s3.qcd                       runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u2s4_inverter               designs/order/inverter-u2s4.qcd                       runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u2s5_inverter               designs/order/inverter-u2s5.qcd                       runs/cfg_e1_inverter.json                -c 32 -t 04:00:00
+e1_u1_majority                 designs/order/majority-u1.qcd                         runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u3_majority                 designs/order/majority-u3.qcd                         runs/cfg_e1_majority.json                -c 32 -t 1-00:00:00
+e1_u2s1_majority               designs/order/majority-u2s1.qcd                       runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u2s2_majority               designs/order/majority-u2s2.qcd                       runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u2s3_majority               designs/order/majority-u2s3.qcd                       runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u2s4_majority               designs/order/majority-u2s4.qcd                       runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u2s5_majority               designs/order/majority-u2s5.qcd                       runs/cfg_e1_majority.json                -c 32 -t 04:00:00
+e1_u1_majority-diagonal        designs/order/majority-diagonal-u1.qcd                runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e1_u3_majority-diagonal        designs/order/majority-diagonal-u3.qcd                runs/cfg_e1_majority-diagonal.json       -c 32 -t 1-00:00:00
+e1_u2s1_majority-diagonal      designs/order/majority-diagonal-u2s1.qcd              runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e1_u2s2_majority-diagonal      designs/order/majority-diagonal-u2s2.qcd              runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e1_u2s3_majority-diagonal      designs/order/majority-diagonal-u2s3.qcd              runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e1_u2s4_majority-diagonal      designs/order/majority-diagonal-u2s4.qcd              runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e1_u2s5_majority-diagonal      designs/order/majority-diagonal-u2s5.qcd              runs/cfg_e1_majority-diagonal.json       -c 32 -t 04:00:00
+e5_u1_memory-cell              designs/order/memory-cell-u1.qcd                      runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+e5_u3_memory-cell              designs/order/memory-cell-u3.qcd                      runs/cfg_e5_memory-cell.json             -c 32 -t 1-00:00:00
+e5_u2s1_memory-cell            designs/order/memory-cell-u2s1.qcd                    runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+e5_u2s2_memory-cell            designs/order/memory-cell-u2s2.qcd                    runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+e5_u2s3_memory-cell            designs/order/memory-cell-u2s3.qcd                    runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+e5_u2s4_memory-cell            designs/order/memory-cell-u2s4.qcd                    runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+e5_u2s5_memory-cell            designs/order/memory-cell-u2s5.qcd                    runs/cfg_e5_memory-cell.json             -c 32 -t 04:00:00
+# full-resolution grids (21 x 33) with the order-independent simultaneous update
+t1_u3_line                     designs/order/line-u3.qcd                             runs/thesis/t1_line.json                 -c 64 -t 2-00:00:00
+t1_u3_line-clocked             designs/order/line-clocked-u3.qcd                     runs/thesis/t1_line-clocked.json         -c 64 -t 2-00:00:00
+t1_u3_inverter                 designs/order/inverter-u3.qcd                         runs/thesis/t1_inverter.json             -c 64 -t 2-00:00:00
+t1_u3_majority                 designs/order/majority-u3.qcd                         runs/thesis/t1_majority.json             -c 64 -t 2-00:00:00
+t1_u3_majority-diagonal        designs/order/majority-diagonal-u3.qcd                runs/thesis/t1_majority-diagonal.json    -c 64 -t 2-00:00:00
+# ternary flip-flop with reset at the nominal geometry, all four update orders (about 0.5 to 5 core-hours each)
+ff_update_order                designs/ternary-flipflop-reset.qcd             runs/cfg_ternary-flipflop-update-order.json -n 4 -c 1 -t 2-00:00:00
