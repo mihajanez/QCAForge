@@ -1,0 +1,27 @@
+# Sweeps of the article's robustness campaign (Section 4) for QCASim hpc/frida/submit-campaign.sh
+# name                 design                           configuration                      submit-sweep.sh options
+e1_inverter            designs/inverter.qcd                     runs/cfg_e1_inverter.json               -c 32
+e1_line-clocked        designs/line-clocked.qcd                 runs/cfg_e1_line-clocked.json           -c 32
+e1_line                designs/line.qcd                         runs/cfg_e1_line.json                   -c 32
+e1_majority-diagonal   designs/majority-diagonal.qcd            runs/cfg_e1_majority-diagonal.json      -c 32
+e1_majority            designs/majority.qcd                     runs/cfg_e1_majority.json               -c 32
+e2_inverter            designs/inverter.qcd                     runs/cfg_e2_inverter.json               -c 32
+e2_line                designs/line.qcd                         runs/cfg_e2_line.json                   -c 32
+e2_majority-diagonal   designs/majority-diagonal.qcd            runs/cfg_e2_majority-diagonal.json      -c 32
+e2_majority            designs/majority.qcd                     runs/cfg_e2_majority.json               -c 32
+e3_inverter            designs/inverter.qcd                     runs/cfg_e3_inverter.json               -c 13
+e3_line-clocked        designs/line-clocked.qcd                 runs/cfg_e3_line-clocked.json           -c 13
+e3_line                designs/line.qcd                         runs/cfg_e3_line.json                   -c 13
+e3_majority-diagonal   designs/majority-diagonal.qcd            runs/cfg_e3_majority-diagonal.json      -c 13
+e3_majority            designs/majority.qcd                     runs/cfg_e3_majority.json               -c 13
+e5_memory-cell         designs/memory-cell.qcd                  runs/cfg_e5_memory-cell.json            -c 32
+ternary-flipflop       designs/ternary-flipflop-reset.qcd       runs/cfg_ternary-flipflop.json          -c 1
+# Full-resolution geometry grids of the thesis (cell size 50:150:3.125 nm x dot radius 14:24:0.5 nm, 693 variants each)
+t1_line                designs/line.qcd                         runs/thesis/t1_line.json                -c 32 -t 08:00:00
+t1_line-clocked        designs/line-clocked.qcd                 runs/thesis/t1_line-clocked.json        -c 32 -t 08:00:00
+t1_inverter            designs/inverter.qcd                     runs/thesis/t1_inverter.json            -c 32 -t 08:00:00
+t1_majority            designs/majority.qcd                     runs/thesis/t1_majority.json            -c 32 -t 08:00:00
+t1_majority-diagonal   designs/majority-diagonal.qcd            runs/thesis/t1_majority-diagonal.json   -c 32 -t 08:00:00
+t1_memory-cell         designs/memory-cell.qcd                  runs/thesis/t1_memory-cell.json         -c 32 -t 08:00:00
+# Geometry sweep of the ternary T flip-flop with reset (91 variants, about 0.5 core-hours each)
+t2_ternary-flipflop    designs/ternary-flipflop-reset.qcd       runs/thesis/t2_ternary-flipflop.json    -n 6 -c 16 -t 08:00:00

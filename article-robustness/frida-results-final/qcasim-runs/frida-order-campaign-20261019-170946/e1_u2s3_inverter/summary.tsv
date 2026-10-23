@@ -1,0 +1,2 @@
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e1_u2s3_inverter	189	189	0	0	0	0.1812	0.0000	0.681	61.0	2	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s3_inverter/run.json

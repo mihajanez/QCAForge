@@ -1,0 +1,4 @@
+merged 2 run files: 189 of 189 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s3_inverter/run.json: 0 fully correct, 0 with errors; simulation time 0.68 core-hours, longest slice 61.0 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e1_u2s3_inverter	189	189	0	0	0	0.1812	0.0000	0.681	61.0	2	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s3_inverter/run.json

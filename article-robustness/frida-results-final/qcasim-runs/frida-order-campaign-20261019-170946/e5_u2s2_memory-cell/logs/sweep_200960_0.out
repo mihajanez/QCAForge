@@ -1,0 +1,7 @@
+task 0 of 1 on api, 32 CPUs
+qca-sim robustness: e5_u2s2_memory-cell (55 of 55 points, 32 threads on api)
+[    60.2 s] 54/55 points (98.6 %), ETA 1 s
+[   120.2 s] 54/55 points (99.2 %), ETA 1 s
+[   180.2 s] 54/55 points (99.8 %), ETA 0 s
+[   197.4 s] 55/55 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e5_u2s2_memory-cell/parts/run.json: 55 points, 0 errors, wall 197.4 s, simulation time 1038.1 s

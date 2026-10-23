@@ -1,0 +1,4 @@
+merged 1 run files: 13 of 13 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e3_majority/run.json: 13 fully correct, 0 with errors; simulation time 0.08 core-hours, longest slice 35.1 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e3_majority	13	13	0	0	13	1.0000	1.0000	0.077	35.1	1	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e3_majority/run.json

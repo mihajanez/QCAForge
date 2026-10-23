@@ -1,0 +1,7 @@
+------------------------------------------------------------------------------------------------------------------------
+FRIDA | https://docs.rdc.si | https://status.rdc.si                                                   17:03:42 up 5 days
+
+MAINT | aga,gh2                                                                     start a month ago, duration 4 months
+MAINT | axa                                                                            start 4 days ago, duration 7 days
+
+200826

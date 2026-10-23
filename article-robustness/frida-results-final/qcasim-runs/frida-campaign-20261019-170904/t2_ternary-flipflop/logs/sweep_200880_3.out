@@ -1,0 +1,45 @@
+task 3 of 6 on api, 16 CPUs
+qca-sim robustness: t2_ternary-flipflop (15 of 91 points, slice 3/6, 16 threads on api)
+[    60.0 s] slice 3/6: 0/15 points (3.6 %), ETA 1628 s
+[   120.0 s] slice 3/6: 0/15 points (6.7 %), ETA 1671 s
+[   180.1 s] slice 3/6: 0/15 points (9.5 %), ETA 1715 s
+[   240.1 s] slice 3/6: 0/15 points (13.0 %), ETA 1607 s
+[   300.1 s] slice 3/6: 0/15 points (16.2 %), ETA 1552 s
+[   360.1 s] slice 3/6: 0/15 points (19.3 %), ETA 1508 s
+[   420.1 s] slice 3/6: 0/15 points (22.5 %), ETA 1444 s
+[   480.2 s] slice 3/6: 0/15 points (25.7 %), ETA 1389 s
+[   540.2 s] slice 3/6: 0/15 points (29.2 %), ETA 1311 s
+[   600.2 s] slice 3/6: 0/15 points (32.4 %), ETA 1252 s
+[   660.2 s] slice 3/6: 0/15 points (35.6 %), ETA 1196 s
+[   720.2 s] slice 3/6: 0/15 points (38.6 %), ETA 1146 s
+[   780.3 s] slice 3/6: 0/15 points (41.6 %), ETA 1097 s
+[   840.3 s] slice 3/6: 0/15 points (44.7 %), ETA 1039 s
+[   900.3 s] slice 3/6: 0/15 points (47.2 %), ETA 1008 s
+[   960.3 s] slice 3/6: 0/15 points (49.2 %), ETA 992 s
+[  1020.4 s] slice 3/6: 0/15 points (51.3 %), ETA 968 s
+[  1080.4 s] slice 3/6: 0/15 points (53.4 %), ETA 943 s
+[  1140.4 s] slice 3/6: 0/15 points (55.1 %), ETA 927 s
+[  1200.4 s] slice 3/6: 0/15 points (57.4 %), ETA 889 s
+[  1260.4 s] slice 3/6: 0/15 points (59.7 %), ETA 850 s
+[  1320.5 s] slice 3/6: 0/15 points (61.8 %), ETA 818 s
+[  1380.5 s] slice 3/6: 0/15 points (64.5 %), ETA 759 s
+[  1440.5 s] slice 3/6: 0/15 points (66.7 %), ETA 718 s
+[  1500.5 s] slice 3/6: 0/15 points (69.0 %), ETA 675 s
+[  1560.7 s] slice 3/6: 2/15 points (71.5 %), ETA 623 s
+[  1620.7 s] slice 3/6: 2/15 points (73.6 %), ETA 582 s
+[  1680.7 s] slice 3/6: 2/15 points (76.0 %), ETA 531 s
+[  1740.8 s] slice 3/6: 2/15 points (78.2 %), ETA 486 s
+[  1800.8 s] slice 3/6: 2/15 points (80.6 %), ETA 433 s
+[  1860.8 s] slice 3/6: 2/15 points (82.7 %), ETA 389 s
+[  1920.8 s] slice 3/6: 2/15 points (85.1 %), ETA 336 s
+[  1981.0 s] slice 3/6: 3/15 points (87.3 %), ETA 288 s
+[  2041.1 s] slice 3/6: 5/15 points (89.5 %), ETA 239 s
+[  2101.1 s] slice 3/6: 5/15 points (91.4 %), ETA 197 s
+[  2161.3 s] slice 3/6: 6/15 points (93.4 %), ETA 152 s
+[  2221.3 s] slice 3/6: 9/15 points (95.1 %), ETA 113 s
+[  2281.4 s] slice 3/6: 10/15 points (96.4 %), ETA 84 s
+[  2341.5 s] slice 3/6: 10/15 points (97.6 %), ETA 58 s
+[  2401.5 s] slice 3/6: 10/15 points (99.0 %), ETA 23 s
+[  2461.5 s] slice 3/6: 13/15 points (99.9 %), ETA 1 s
+[  2470.1 s] slice 3/6: 15/15 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t2_ternary-flipflop/parts/run.part-3-of-6.json: 15 points, 0 errors, wall 2470.1 s, simulation time 32357.0 s

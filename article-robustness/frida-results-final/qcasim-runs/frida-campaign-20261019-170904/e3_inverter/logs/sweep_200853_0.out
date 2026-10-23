@@ -1,0 +1,4 @@
+task 0 of 1 on api, 13 CPUs
+qca-sim robustness: e3_inverter (13 of 13 points, 13 threads on api)
+[    31.5 s] 13/13 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e3_inverter/parts/run.json: 13 points, 0 errors, wall 31.5 s, simulation time 164.8 s

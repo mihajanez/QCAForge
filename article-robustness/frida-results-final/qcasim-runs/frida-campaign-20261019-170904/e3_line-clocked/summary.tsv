@@ -1,0 +1,2 @@
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e3_line-clocked	13	13	0	0	13	1.0000	1.0000	0.006	1.9	1	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e3_line-clocked/run.json

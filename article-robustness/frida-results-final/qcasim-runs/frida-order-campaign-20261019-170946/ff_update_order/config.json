@@ -1,0 +1,22 @@
+{
+  "x_axis": {
+    "parameter": "model.update_order",
+    "values": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "y_axis": null,
+  "expected_behavior": "ternary_flipflop",
+  "cell_clock_delays": {
+    "R": 1,
+    "Q": 1
+  },
+  "thresholds": {
+    "clock": 0.05,
+    "logical": 0.05,
+    "value": 0.8
+  }
+}

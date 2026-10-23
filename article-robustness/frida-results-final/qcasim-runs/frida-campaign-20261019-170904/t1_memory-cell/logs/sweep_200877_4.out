@@ -1,0 +1,4 @@
+task 4 of 6 on api, 32 CPUs
+qca-sim robustness: t1_memory-cell (115 of 693 points, slice 4/6, 32 threads on api)
+[    57.3 s] slice 4/6: 115/115 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t1_memory-cell/parts/run.part-4-of-6.json: 115 points, 0 errors, wall 57.3 s, simulation time 1462.9 s

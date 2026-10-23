@@ -1,0 +1,4 @@
+merged 1 run files: 52 of 52 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e2_majority-diagonal/run.json: 15 fully correct, 0 with errors; simulation time 0.15 core-hours, longest slice 21.8 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e2_majority-diagonal	52	52	0	0	15	0.8013	0.3704	0.147	21.8	1	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e2_majority-diagonal/run.json

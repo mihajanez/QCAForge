@@ -1,0 +1,32 @@
+task 1 of 4 on api, 1 CPUs
+qca-sim robustness: ff_update_order (1 of 4 points, slice 1/4, 1 threads on api)
+[    60.0 s] slice 1/4: 0/1 points (3.9 %), ETA 1483 s
+[   120.1 s] slice 1/4: 0/1 points (7.5 %), ETA 1481 s
+[   180.1 s] slice 1/4: 0/1 points (9.4 %), ETA 1727 s
+[   240.1 s] slice 1/4: 0/1 points (13.1 %), ETA 1599 s
+[   300.1 s] slice 1/4: 0/1 points (15.0 %), ETA 1701 s
+[   360.2 s] slice 1/4: 0/1 points (19.2 %), ETA 1519 s
+[   420.2 s] slice 1/4: 0/1 points (21.7 %), ETA 1519 s
+[   480.2 s] slice 1/4: 0/1 points (25.6 %), ETA 1399 s
+[   540.2 s] slice 1/4: 0/1 points (29.7 %), ETA 1277 s
+[   600.3 s] slice 1/4: 0/1 points (32.5 %), ETA 1247 s
+[   660.3 s] slice 1/4: 0/1 points (35.8 %), ETA 1182 s
+[   720.3 s] slice 1/4: 0/1 points (38.6 %), ETA 1145 s
+[   780.3 s] slice 1/4: 0/1 points (42.8 %), ETA 1044 s
+[   840.4 s] slice 1/4: 0/1 points (46.7 %), ETA 960 s
+[   900.4 s] slice 1/4: 0/1 points (49.2 %), ETA 931 s
+[   960.4 s] slice 1/4: 0/1 points (53.1 %), ETA 850 s
+[  1020.4 s] slice 1/4: 0/1 points (57.2 %), ETA 763 s
+[  1080.5 s] slice 1/4: 0/1 points (60.0 %), ETA 720 s
+[  1140.5 s] slice 1/4: 0/1 points (64.2 %), ETA 637 s
+[  1200.5 s] slice 1/4: 0/1 points (68.3 %), ETA 556 s
+[  1260.5 s] slice 1/4: 0/1 points (71.7 %), ETA 498 s
+[  1320.6 s] slice 1/4: 0/1 points (75.8 %), ETA 421 s
+[  1380.6 s] slice 1/4: 0/1 points (80.0 %), ETA 345 s
+[  1440.6 s] slice 1/4: 0/1 points (83.6 %), ETA 282 s
+[  1500.6 s] slice 1/4: 0/1 points (87.8 %), ETA 209 s
+[  1560.6 s] slice 1/4: 0/1 points (92.5 %), ETA 127 s
+[  1620.7 s] slice 1/4: 0/1 points (96.7 %), ETA 56 s
+[  1680.7 s] slice 1/4: 0/1 points (99.7 %), ETA 5 s
+[  1682.9 s] slice 1/4: 1/1 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/ff_update_order/parts/run.part-1-of-4.json: 1 points, 0 errors, wall 1682.9 s, simulation time 1682.9 s

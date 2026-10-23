@@ -1,0 +1,4 @@
+merged 1 run files: 55 of 55 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e5_u1_memory-cell/run.json: 0 fully correct, 0 with errors; simulation time 0.28 core-hours, longest slice 171.3 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e5_u1_memory-cell	55	55	0	0	0	0.4602	0.1250	0.282	171.3	1	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e5_u1_memory-cell/run.json

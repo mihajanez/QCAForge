@@ -1,0 +1,4 @@
+task 0 of 1 on api, 32 CPUs
+qca-sim robustness: e2_inverter (52 of 52 points, 32 threads on api)
+[    12.6 s] 52/52 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e2_inverter/parts/run.json: 52 points, 0 errors, wall 12.6 s, simulation time 281.7 s

@@ -1,0 +1,2 @@
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e1_majority-diagonal	189	189	0	0	165	0.9436	0.3704	1.149	115.6	2	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/e1_majority-diagonal/run.json

@@ -1,0 +1,2 @@
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e5_u2s4_memory-cell	55	55	0	0	0	0.5284	0.1875	0.291	194.3	1	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e5_u2s4_memory-cell/run.json

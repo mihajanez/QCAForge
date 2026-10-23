@@ -1,0 +1,5 @@
+task 5 of 6 on api, 32 CPUs
+qca-sim robustness: t1_majority (115 of 693 points, slice 5/6, 32 threads on api)
+[    60.0 s] slice 5/6: 75/115 points (78.3 %), ETA 17 s
+[   112.6 s] slice 5/6: 115/115 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t1_majority/parts/run.part-5-of-6.json: 115 points, 0 errors, wall 112.6 s, simulation time 2561.4 s

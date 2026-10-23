@@ -1,0 +1,27 @@
+task 0 of 1 on api, 1 CPUs
+qca-sim robustness: ternary-flipflop (1 of 1 points, 1 threads on api)
+[    60.0 s] 0/1 points (4.7 %), ETA 1211 s
+[   120.1 s] 0/1 points (9.2 %), ETA 1190 s
+[   180.1 s] 0/1 points (14.2 %), ETA 1091 s
+[   240.1 s] 0/1 points (18.6 %), ETA 1050 s
+[   300.1 s] 0/1 points (23.9 %), ETA 956 s
+[   360.2 s] 0/1 points (26.7 %), ETA 990 s
+[   420.2 s] 0/1 points (31.4 %), ETA 918 s
+[   480.2 s] 0/1 points (36.1 %), ETA 850 s
+[   540.2 s] 0/1 points (41.1 %), ETA 774 s
+[   600.3 s] 0/1 points (46.1 %), ETA 702 s
+[   660.3 s] 0/1 points (49.2 %), ETA 683 s
+[   720.3 s] 0/1 points (53.6 %), ETA 623 s
+[   780.4 s] 0/1 points (58.1 %), ETA 564 s
+[   840.4 s] 0/1 points (62.8 %), ETA 498 s
+[   900.4 s] 0/1 points (66.1 %), ETA 462 s
+[   960.4 s] 0/1 points (70.0 %), ETA 412 s
+[  1020.5 s] 0/1 points (74.2 %), ETA 355 s
+[  1080.5 s] 0/1 points (77.2 %), ETA 319 s
+[  1140.5 s] 0/1 points (81.7 %), ETA 256 s
+[  1200.5 s] 0/1 points (86.4 %), ETA 189 s
+[  1260.6 s] 0/1 points (90.8 %), ETA 127 s
+[  1320.6 s] 0/1 points (93.9 %), ETA 86 s
+[  1380.6 s] 0/1 points (98.3 %), ETA 23 s
+[  1401.4 s] 1/1 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/ternary-flipflop/parts/run.json: 1 points, 0 errors, wall 1401.4 s, simulation time 1401.4 s

@@ -1,0 +1,20 @@
+task 3 of 4 on api, 1 CPUs
+qca-sim robustness: ff_update_order (1 of 4 points, slice 3/4, 1 threads on api)
+[    60.1 s] slice 3/4: 0/1 points (4.4 %), ETA 1293 s
+[   120.2 s] slice 3/4: 0/1 points (9.4 %), ETA 1153 s
+[   180.3 s] slice 3/4: 0/1 points (15.6 %), ETA 979 s
+[   240.4 s] slice 3/4: 0/1 points (20.6 %), ETA 929 s
+[   300.5 s] slice 3/4: 0/1 points (27.5 %), ETA 792 s
+[   360.6 s] slice 3/4: 0/1 points (35.3 %), ETA 661 s
+[   420.7 s] slice 3/4: 0/1 points (41.4 %), ETA 596 s
+[   480.8 s] slice 3/4: 0/1 points (48.3 %), ETA 514 s
+[   540.9 s] slice 3/4: 0/1 points (55.0 %), ETA 443 s
+[   601.1 s] slice 3/4: 0/1 points (60.8 %), ETA 387 s
+[   661.2 s] slice 3/4: 0/1 points (68.3 %), ETA 306 s
+[   721.2 s] slice 3/4: 0/1 points (73.9 %), ETA 255 s
+[   781.3 s] slice 3/4: 0/1 points (80.3 %), ETA 192 s
+[   841.4 s] slice 3/4: 0/1 points (87.2 %), ETA 123 s
+[   901.5 s] slice 3/4: 0/1 points (92.8 %), ETA 70 s
+[   961.6 s] slice 3/4: 0/1 points (98.9 %), ETA 11 s
+[   976.0 s] slice 3/4: 1/1 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/ff_update_order/parts/run.part-3-of-4.json: 1 points, 0 errors, wall 976.0 s, simulation time 976.0 s

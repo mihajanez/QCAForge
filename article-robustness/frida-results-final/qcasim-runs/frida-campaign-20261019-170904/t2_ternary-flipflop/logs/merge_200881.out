@@ -1,0 +1,4 @@
+merged 6 run files: 91 of 91 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t2_ternary-flipflop/run.json: 0 fully correct, 0 with errors; simulation time 50.58 core-hours, longest slice 2636.1 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+t2_ternary-flipflop	91	91	0	0	0	0.7955	0.4444	50.583	2636.1	6	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t2_ternary-flipflop/run.json

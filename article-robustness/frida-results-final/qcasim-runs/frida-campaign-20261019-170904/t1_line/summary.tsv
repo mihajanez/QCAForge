@@ -1,0 +1,2 @@
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+t1_line	693	693	0	0	568	0.9097	0.4375	0.369	18.4	6	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-campaign-20261019-170904/t1_line/run.json

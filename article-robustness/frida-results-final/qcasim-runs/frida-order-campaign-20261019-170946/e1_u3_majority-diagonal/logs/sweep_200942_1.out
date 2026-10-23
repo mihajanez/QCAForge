@@ -1,0 +1,6 @@
+task 1 of 2 on api, 32 CPUs
+qca-sim robustness: e1_u3_majority-diagonal (94 of 189 points, slice 1/2, 32 threads on api)
+[    60.1 s] slice 1/2: 39/94 points (57.2 %), ETA 45 s
+[   120.2 s] slice 1/2: 73/94 points (93.5 %), ETA 8 s
+[   159.7 s] slice 1/2: 94/94 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u3_majority-diagonal/parts/run.part-1-of-2.json: 94 points, 0 errors, wall 159.7 s, simulation time 4070.0 s

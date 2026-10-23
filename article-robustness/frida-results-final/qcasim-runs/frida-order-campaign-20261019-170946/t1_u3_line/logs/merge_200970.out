@@ -1,0 +1,4 @@
+merged 3 run files: 693 of 693 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/t1_u3_line/run.json: 541 fully correct, 0 with errors; simulation time 0.65 core-hours, longest slice 17.6 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+t1_u3_line	693	693	0	0	541	0.8931	0.4375	0.651	17.6	3	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/t1_u3_line/run.json

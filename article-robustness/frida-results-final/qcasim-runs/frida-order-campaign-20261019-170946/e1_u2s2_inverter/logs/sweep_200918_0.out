@@ -1,0 +1,4 @@
+task 0 of 2 on api, 32 CPUs
+qca-sim robustness: e1_u2s2_inverter (95 of 189 points, slice 0/2, 32 threads on api)
+[    57.3 s] slice 0/2: 95/95 points (100.0 %)
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s2_inverter/parts/run.part-0-of-2.json: 95 points, 0 errors, wall 57.3 s, simulation time 1191.1 s

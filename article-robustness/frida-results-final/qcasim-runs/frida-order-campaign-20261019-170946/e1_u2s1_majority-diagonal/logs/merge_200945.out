@@ -1,0 +1,4 @@
+merged 2 run files: 189 of 189 points, 0 duplicates, 0 missing
+wrote /shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s1_majority-diagonal/run.json: 0 fully correct, 0 with errors; simulation time 0.89 core-hours, longest slice 89.2 s
+name	points	grid	missing	errors	fully_correct	mean_accuracy	min_accuracy	simulation_core_hours	wall_s	slices	file
+e1_u2s1_majority-diagonal	189	189	0	0	0	0.6927	0.3704	0.891	89.2	2	/shared/workspace/lrss/miha.janez/qcasim-runs/frida-order-campaign-20261019-170946/e1_u2s1_majority-diagonal/run.json
