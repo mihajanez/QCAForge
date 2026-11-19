@@ -18,3 +18,14 @@ target/
 Claude outputs/
 # the workspace lock file is the one in the repository root
 /src-tauri/Cargo.lock
+
+# Design files of the robustness studies are part of the repository
+!robustness-studies/**/*.qcd
+
+# Local-only files: raw cluster run directories, archives, logs, git bundles, IDE settings
+robustness-studies/frida-results*/
+robustness-studies/*.tar.gz
+robustness-studies/*.log
+*.bundle
+.idea/
+/src-tauri/2
