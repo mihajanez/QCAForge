@@ -247,7 +247,7 @@
 	<Resizable.Pane minSize={10} class="">
 		<div class="h-full flex flex-col">
 			<Tabs.Root
-				class="h-full w-full flex flex-col"
+				class="flex-1 min-h-0 w-full flex flex-col"
 				value={activeTab}
 				onValueChange={updateActiveTab}
 				activationMode="automatic"
@@ -285,7 +285,7 @@
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
 				</Tabs.List>
-				<div class="h-full flex items-stretch">
+				<div class="flex-1 min-h-0 flex items-stretch">
 					{#each visuals as { Component, props }, i (resetGeneration + "-" + i)}
 						<Tabs.Content value={i.toString()} class="w-full">
 							<Component
