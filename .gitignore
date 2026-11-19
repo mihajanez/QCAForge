@@ -29,3 +29,4 @@ robustness-studies/*.log
 *.bundle
 .idea/
 /src-tauri/2
+/app/
