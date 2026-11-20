@@ -58,7 +58,7 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "app"
-version = "0.6.0"
+version = "1.0.0"
 dependencies = [
  "chrono",
  "log",
@@ -3280,8 +3280,8 @@ dependencies = [
 
 [[package]]
 name = "qca-core"
-version = "0.4.1"
-source = "git+https://github.com/mihajanez/QCASim.git#6bc27c36f20d3288011fc56ad3082747307dac78"
+version = "1.1.0"
+source = "git+https://github.com/mihajanez/QCASim.git#f8b2c7631fc82ee7ea72750d4b4c5b8fe9d74cf4"
 dependencies = [
  "chrono",
  "log",
